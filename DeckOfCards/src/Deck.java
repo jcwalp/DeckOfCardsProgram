@@ -30,13 +30,13 @@ class Deck {
 		return j;
 	}
 	
-	public static ArrayList<Card> getFourOfAKind(){
+	public static ArrayList<Card> getCertainHand(){
 		ArrayList<Card> fourKind = new ArrayList<Card>();
-		Card a = new Card("H", "9");
-		Card b = new Card("C", "9");
-		Card c = new Card("D", "9");
-		Card d = new Card("S", "9");
-		Card e = new Card("D", "3");
+		Card a = new Card("H", "2");
+		Card b = new Card("H", "3");
+		Card c = new Card("H", "4");
+		Card d = new Card("H", "5");
+		Card e = new Card("H", "6");
 		fourKind.add(a);
 		fourKind.add(b);
 		fourKind.add(c);

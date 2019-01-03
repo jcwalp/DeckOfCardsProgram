@@ -2,6 +2,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+//Hand Class-----
+//Individual Hand Delt
+//Methods:
+//-printHand() --prints given hand
+//-getValues()/getSuit() --returns the suits and values in a given hand inside a string array
+//-determineValue() --Determines the cases of the hand using check methods 
+//individual value checks-----
+//Helpers:
+//-convertInt(String[]) --converts the string array values into an int array to make it easier to check cases
+//-sortByValue(int[]) --sorts int array from smallest to largest
+//-sameSuit(String[]) --returns true if all suits in array are the same
+
+
 class Hand {
 	Deck cDeck; //creates a new deck to work off of(not sure if needed or not but whatevs)
 	ArrayList<Card> nHand = new ArrayList<Card>(); //inits a new arraylist to hold the five cards in the hand
@@ -10,7 +23,7 @@ class Hand {
 		cDeck = new Deck();
 		Random gen = new Random(); //calls in random to pick random cards
 		int count = 0; //counter to count how many cards we've picked
-		nHand = Deck.getFourOfAKind();
+		nHand = Deck.getCertainHand();
 //		while(count < 5) {
 //			int r = gen.nextInt(cDeck.getSize()); //generates a random num between 0 and 51
 //			Card e = cDeck.getCard(r); //uses method from deck to get card from that location
@@ -57,40 +70,39 @@ class Hand {
 		valInt = sortByValue(valInt); //sorts array from small to large
 		String res = ""; //sets the output string
 		
-		if (isStFlush(suits, valInt)) {
-			res = "Straight Flush";
+		if(isStraight(valInt)) {
+			res = "Straight";
 		}
 		if (isFourKind(valInt)) {
 			res = "Four of a Kind";
+		}
+		if (fullHouse(valInt)) {
+			res = "Full House";
 		}
 		else {
 			res = "junk";
 		}
 		
-		for (int i = 0; i < valInt.length; i++) {
-			System.out.println(valInt[i]);
-		}
 		
 		
 		
 		return res;
 	}
 	
-	public boolean isStFlush(String[] suits, int[] values) {
-		boolean flag = true;
+	public boolean isFlush(String[] suits) {
 		if (sameSuit(suits)) {
-			for (int i = 0; i < values.length; i++) {
-				if (values[i] == values[0] + i && flag) {
-					return true;
-				}
-				else {
-					flag = false;
-					break;
-				}
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isStraight(int[] values) {
+		for (int i = 1; i < values.length; i++) {
+			if (values[i] != values[0] + i) {
+				return false;
 			}
 		}
-		
-		return false;
+		return true;
 	}
 	
 	public boolean isFourKind(int[] values) {
@@ -107,15 +119,37 @@ class Hand {
 		return (a1 || a2);
 	}
 	
+	public boolean fullHouse(int[] values) {
+		boolean a1, a2, a3;
+		
+		a1 = values[0] == values[1] && //checking if the first three cards are the same and the last two are the same
+			 values[1] == values[2] &&
+			 values[3] == values[4];
+		
+		a2 = values[1] == values[2] && //checking if the first and last card are a pair and the middle three are the same
+			 values[2] == values[3] &&
+			 values[0] == values[4];
+		
+		a3 = values[0] == values[1] && //checks if first two cards are the pair and the other three are the same
+			 values[2] == values[3] &&
+			 values[3] == values[4];
+		
+		return (a1 || a2 || a3);
+				
+	}
+	
+	
+
 	
 	
 	
 	
 	
 	
-	//---------
-	//HELPING METHODS
-	//---------
+	
+/*
+ * =========HELPER METHODS=========================
+ */
 	public int[] convertInt(String[] a) {
 		int[] vals = new int[a.length];
 		for (int i = 0; i < a.length; i++) {
@@ -156,25 +190,4 @@ class Hand {
 		return true;
 	}
 	
-	public int[] convertToInt(String[] a) {
-		int[] vals = new int[a.length];
-		for (int i = 0; i < a.length; i++) {
-			if (a[i] == "A") {
-				a[i] = "1";
-			}
-			if (a[i] == "J") {
-				a[i] = "11";
-			}
-			if (a[i] == "Q") {
-				a[i] = "12";
-			}
-			if (a[i] == "K") {
-				a[i] = "13";
-			}
-		}
-		for (int i = 0; i < vals.length; i++) {
-			vals[i] = Integer.parseInt(a[i]);
-		}
-		return vals;
-	}
 }
