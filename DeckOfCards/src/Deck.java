@@ -29,5 +29,20 @@ class Deck {
 		Card j = kCards.get(i);
 		return j;
 	}
+	
+	public static ArrayList<Card> getFourOfAKind(){
+		ArrayList<Card> fourKind = new ArrayList<Card>();
+		Card a = new Card("H", "9");
+		Card b = new Card("C", "9");
+		Card c = new Card("D", "9");
+		Card d = new Card("S", "9");
+		Card e = new Card("D", "3");
+		fourKind.add(a);
+		fourKind.add(b);
+		fourKind.add(c);
+		fourKind.add(d);
+		fourKind.add(e);
+		return fourKind;
+	}
 
 }
