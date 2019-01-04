@@ -23,13 +23,13 @@ class Hand {
 		cDeck = new Deck();
 		Random gen = new Random(); //calls in random to pick random cards
 		int count = 0; //counter to count how many cards we've picked
-		nHand = Deck.getCertainHand();
-//		while(count < 5) {
-//			int r = gen.nextInt(cDeck.getSize()); //generates a random num between 0 and 51
-//			Card e = cDeck.getCard(r); //uses method from deck to get card from that location
-//			nHand.add(e); //pushes this card onto the new hand
-//			count++; //increments count
-//		}
+		//nHand = Deck.getCertainHand();
+		while(count < 5) {
+			int r = gen.nextInt(cDeck.getSize()); //generates a random num between 0 and 51
+			Card e = cDeck.getCard(r); //uses method from deck to get card from that location
+			nHand.add(e); //pushes this card onto the new hand
+			count++; //increments count
+		}
 	}
 	//----End Creation
 	//printing of hand
@@ -70,32 +70,47 @@ class Hand {
 		valInt = sortByValue(valInt); //sorts array from small to large
 		String res = ""; //sets the output string
 		
-		if(isStraight(valInt)) {
+		if(isStraight(valInt) && isFlush(suits)) {
+			res = "Straight Flush";
+		}
+		else if (!isStraight(valInt) && isFlush(suits)) {
+			res = "Flush";
+		}
+		else if (isStraight(valInt) && !isFlush(suits)) {
 			res = "Straight";
 		}
-		if (isFourKind(valInt)) {
+		else if (isFourKind(valInt)) {
 			res = "Four of a Kind";
 		}
-		if (fullHouse(valInt)) {
+		else if (fullHouse(valInt)) {
 			res = "Full House";
+		}  
+		else if (isThreeKind(valInt)) {
+			res = "Three of a Kind";
+		}
+		else if (twoPair(valInt)) {
+			res = "Two Pair";
+		}
+		else if (onePair(valInt)) {
+			res = "One Pair";
 		}
 		else {
 			res = "junk";
 		}
-		
-		
-		
-		
 		return res;
 	}
-	
+	/*
+	 * Used in finding a flush and a straight flush
+	 */
 	public boolean isFlush(String[] suits) {
 		if (sameSuit(suits)) {
 			return true;
 		}
 		return false;
 	}
-	
+	/*
+	 * Used in finding both a straight and a straight flush
+	 */
 	public boolean isStraight(int[] values) {
 		for (int i = 1; i < values.length; i++) {
 			if (values[i] != values[0] + i) {
@@ -104,7 +119,9 @@ class Hand {
 		}
 		return true;
 	}
-	
+	/*
+	 * Method that finds a pair of four
+	 */
 	public boolean isFourKind(int[] values) {
 		boolean a1, a2;
 		
@@ -118,7 +135,9 @@ class Hand {
 		
 		return (a1 || a2);
 	}
-	
+	/*
+	 * Method that finds full house
+	 */
 	public boolean fullHouse(int[] values) {
 		boolean a1, a2, a3;
 		
@@ -137,10 +156,56 @@ class Hand {
 		return (a1 || a2 || a3);
 				
 	}
-	
-	
-
-	
+	/*
+	 * Method that finds three of a kind
+	 */
+	public boolean isThreeKind(int[] values) {
+		boolean a1, a2, a3;
+		
+		a1 = values[0] == values[1] &&
+			 values[1] == values[2] &&
+			 values[3] != values[4];
+		
+		a2 = values[1] == values[2] &&
+			 values[2] == values[3] &&
+			 values[0] != values[4];
+		
+		a3 = values[0] != values[1] &&
+			 values[2] == values[3] &&
+			 values[3] == values[4];
+		
+		return (a1 || a2 || a3);
+	}
+	/*
+	 * Method that finds two pairs
+	 */
+	public boolean twoPair(int[] values) {
+		boolean a1, a2;
+		
+		a1 = values[0] == values[1] &&
+			 values[2] == values[3];
+		
+		a2 = values[1] == values[2] &&
+			 values[3] == values[4];
+		
+		return (a1 || a2);
+	}
+	/*
+	 * Method that finds one pair
+	 */
+	public boolean onePair(int[] values) {
+		boolean a1, a2, a3, a4;
+		
+		a1 = values[0] == values[1];
+		
+		a2 = values[1] == values[2];
+		
+		a3 = values[2] == values[3];
+		
+		a4 = values[3] == values[4];
+		
+		return(a1 || a2 || a3 || a4);
+	}
 	
 	
 	
@@ -150,6 +215,12 @@ class Hand {
 /*
  * =========HELPER METHODS=========================
  */
+	
+	/*
+	 * Method that converts our original value array of strings
+	 * into an int araray  which makes it easier to use
+	 * I changed all of the letter values into their numerical constants
+	 */
 	public int[] convertInt(String[] a) {
 		int[] vals = new int[a.length];
 		for (int i = 0; i < a.length; i++) {
@@ -172,7 +243,10 @@ class Hand {
 		return vals;
 	}
 	
-	
+	/*
+	 * Sorts the array sent and then returns it
+	 * this makes finding pairs and incrementing values easy
+	 */
 	public int[] sortByValue(int[] a) {
 		int[] sorted = new int[a.length];
 		sorted = a;
@@ -180,7 +254,9 @@ class Hand {
 		return sorted;
 	}
 	
-	
+	/*
+	 * Method checks to see if all the cards in string array are the same suit
+	 */
 	public boolean sameSuit(String[] a) {
 		for (int i = 1; i < a.length; i++) {
 			if (a[0] != a[i]) {
