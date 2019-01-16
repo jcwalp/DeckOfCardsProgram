@@ -79,19 +79,19 @@ class Hand {
 		else if (isStraight(valInt) && !isFlush(suits)) {
 			res = "Straight";
 		}
-		else if (isFourKind(valInt)) {
+		else if (findPairs(valInt) == 5) {
+			res = "Full House";
+		}
+		else if (findPairs(valInt) == 4) {
 			res = "Four of a Kind";
 		}
-		else if (fullHouse(valInt)) {
-			res = "Full House";
-		}  
-		else if (isThreeKind(valInt)) {
+		else if (findPairs(valInt) == 3) {
 			res = "Three of a Kind";
 		}
-		else if (twoPair(valInt)) {
+		else if (findPairs(valInt) == 2) {
 			res = "Two Pair";
 		}
-		else if (onePair(valInt)) {
+		else if (findPairs(valInt) == 1) {
 			res = "One Pair";
 		}
 		else {
@@ -122,91 +122,55 @@ class Hand {
 	/*
 	 * Method that finds a pair of four
 	 */
-	public boolean isFourKind(int[] values) {
-		boolean a1, a2;
-		
-		a1 = values[0] == values[1] &&
-			 values[1] == values[2] &&
-			 values[2] == values[3];
-		
-		a2 = values[1] == values[2] &&
-			 values[2] == values[3] &&
-			 values[3] == values[4];
-		
-		return (a1 || a2);
+	public int findPairs(int[] values){
+		boolean fourOfKind, threeOfKind, twoPair, onePair;
+		int fH = 5, fK = 4, tK = 3, tP = 2, oP = 1, n = 0;
+
+		fourOfKind = values[0] == values[1] &&
+				values[1] == values[2] &&
+				values[2] == values[3] ||
+				values[1] == values[2] &&
+				values[2] == values[3] &&
+				values[3] == values[4];
+
+		threeOfKind = values[0] == values[1] &&
+				values[1] == values[2] ||
+				values[1] == values[2] &&
+				values[2] == values[3] ||
+				values[2] == values[3] &&
+				values[3] == values[4];
+
+		twoPair = values[0] == values[1] &&
+				values[2] == values[3] ||
+				values[1] == values[2] &&
+				values[3] == values[4] ||
+				values[0] == values[1] &&
+				values[3] == values[4];
+
+		onePair = values[0] == values[1] ||
+				values[1] == values[2] ||
+				values[2] == values[3] || 
+				values[3] == values[4];
+
+		if (fourOfKind) {
+			return fK;
+		}
+		else if (threeOfKind && !twoPair){
+			return tK;
+		}
+		else if (threeOfKind && twoPair){
+			return fH;
+		}
+		else if (twoPair){
+			return tP;
+		}
+		else if (onePair){
+			return oP;
+		}
+		else {
+			return n;
+		}
 	}
-	/*
-	 * Method that finds full house
-	 */
-	public boolean fullHouse(int[] values) {
-		boolean a1, a2, a3;
-		
-		a1 = values[0] == values[1] && //checking if the first three cards are the same and the last two are the same
-			 values[1] == values[2] &&
-			 values[3] == values[4];
-		
-		a2 = values[1] == values[2] && //checking if the first and last card are a pair and the middle three are the same
-			 values[2] == values[3] &&
-			 values[0] == values[4];
-		
-		a3 = values[0] == values[1] && //checks if first two cards are the pair and the other three are the same
-			 values[2] == values[3] &&
-			 values[3] == values[4];
-		
-		return (a1 || a2 || a3);
-				
-	}
-	/*
-	 * Method that finds three of a kind
-	 */
-	public boolean isThreeKind(int[] values) {
-		boolean a1, a2, a3;
-		
-		a1 = values[0] == values[1] &&
-			 values[1] == values[2] &&
-			 values[3] != values[4];
-		
-		a2 = values[1] == values[2] &&
-			 values[2] == values[3] &&
-			 values[0] != values[4];
-		
-		a3 = values[0] != values[1] &&
-			 values[2] == values[3] &&
-			 values[3] == values[4];
-		
-		return (a1 || a2 || a3);
-	}
-	/*
-	 * Method that finds two pairs
-	 */
-	public boolean twoPair(int[] values) {
-		boolean a1, a2;
-		
-		a1 = values[0] == values[1] &&
-			 values[2] == values[3];
-		
-		a2 = values[1] == values[2] &&
-			 values[3] == values[4];
-		
-		return (a1 || a2);
-	}
-	/*
-	 * Method that finds one pair
-	 */
-	public boolean onePair(int[] values) {
-		boolean a1, a2, a3, a4;
-		
-		a1 = values[0] == values[1];
-		
-		a2 = values[1] == values[2];
-		
-		a3 = values[2] == values[3];
-		
-		a4 = values[3] == values[4];
-		
-		return(a1 || a2 || a3 || a4);
-	}
-	
 	
 	
 	
