@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random;
+import java.util.Scanner;
 
 //Hand Class-----
 //Individual Hand Delt
@@ -16,19 +16,37 @@ import java.util.Random;
 
 
 class Hand {
+	Scanner kb = new Scanner(System.in);
 	Deck cDeck; //creates a new deck to work off of(not sure if needed or not but whatevs)
-	ArrayList<Card> nHand = new ArrayList<Card>(); //inits a new arraylist to hold the five cards in the hand
+	ArrayList<Card> nHand = new ArrayList<>(); //inits a new arraylist to hold the five cards in the hand
 	//creation of hand
 	public Hand() {
 		cDeck = new Deck();
-		Random gen = new Random(); //calls in random to pick random cards
 		int count = 0; //counter to count how many cards we've picked
-		//nHand = Deck.getCertainHand();
+		String[] tempSuit = new String[5];
+		String[] tempVal = new String[5];
 		while(count < 5) {
-			int r = gen.nextInt(cDeck.getSize()); //generates a random num between 0 and 51
-			Card e = cDeck.getCard(r); //uses method from deck to get card from that location
-			nHand.add(e); //pushes this card onto the new hand
+			System.out.println("Enter Card Suit(H, D, C, S): ");
+			String suit = kb.nextLine();
+			tempSuit[count] = suit;
+			System.out.println("Enter Card Value (A, 1...,10, J..): ");
+			String value = kb.nextLine();
+			tempVal[count] = value;
 			count++; //increments count
+		}
+		for (int i = 0; i < tempSuit.length; i++){
+			tempSuit[i].toUpperCase();
+		}
+		for (int i = 0; i < tempVal.length; i++){
+			switch(tempVal[i]){
+				case "a": tempVal[i] = "A";
+				case "j": tempVal[i] = "J";
+				case "q": tempVal[i] = "Q";
+				case "k": tempVal[i] = "K";
+			}
+		}
+		for (int i = 0; i < 5; i++){
+			nHand.add(Deck.getCertainCard(tempSuit[i], tempVal[i]));
 		}
 	}
 	//----End Creation
@@ -119,9 +137,6 @@ class Hand {
 		}
 		return true;
 	}
-	/*
-	 * Method that finds a pair of four
-	 */
 	public int findPairs(int[] values){
 		boolean fourOfKind, threeOfKind, twoPair, onePair;
 		int fH = 5, fK = 4, tK = 3, tP = 2, oP = 1, n = 0;

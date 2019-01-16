@@ -6,7 +6,7 @@ class Deck {
 	public ArrayList<Card> kCards; //arraylist to hold deck
 	
 	public Deck() {
-		kCards = new ArrayList<Card>(); //init arraylist
+		kCards = new ArrayList<>(); //init arraylist
 		for (String suit : SUITS) { //loop through the two lists and add new cards to the deck
 			for (String rank : RANKS) {
 				Card nCard = new Card(suit, rank);
@@ -30,19 +30,10 @@ class Deck {
 		return j;
 	}
 	
-	public static ArrayList<Card> getCertainHand(){
-		ArrayList<Card> fourKind = new ArrayList<Card>();
-		Card a = new Card("H", "A");
-		Card b = new Card("D", "A");
-		Card c = new Card("S", "A");
-		Card d = new Card("H", "5");
-		Card e = new Card("D", "5");
-		fourKind.add(a);
-		fourKind.add(b);
-		fourKind.add(c);
-		fourKind.add(d);
-		fourKind.add(e);
-		return fourKind;
+	public static Card getCertainCard(String suit, String value) {
+		Card c;
+		c = new Card(suit, value);
+		return c;
 	}
 
 }
