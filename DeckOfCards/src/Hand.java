@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.Random;
 
 //Hand Class-----
 //Individual Hand Delt
@@ -19,43 +20,11 @@ class Hand {
 	Scanner kb = new Scanner(System.in);
 	Deck cDeck; //creates a new deck to work off of(not sure if needed or not but whatevs)
 	ArrayList<Card> nHand = new ArrayList<>(); //inits a new arraylist to hold the five cards in the hand
+	Random r = new Random();
 	//creation of hand
 	public Hand() {
 		cDeck = new Deck();
-		int count = 0; //counter to count how many cards we've picked
-		String[] tempSuit = new String[5];
-		String[] tempVal = new String[5];
-		while(count < 5) {
-			System.out.println("Enter Card Suit(H, D, C, S): ");
-			String suit = kb.nextLine();
-			tempSuit[count] = suit;
-			System.out.println("Enter Card Value (A, 1...,10, J..): ");
-			String value = kb.nextLine();
-			tempVal[count] = value;
-			count++; //increments count
-		}
-		formatAndGetHand(tempSuit, tempVal);
-	}
-	public void formatAndGetHand(String[] suit, String[] values){
-		for (int i = 0; i < values.length; i++){
-			switch(values[i]){
-				case "a":
-					values[i]="A";
-					break;
-				case "j":
-					values[i]="J";
-					break;
-				case "q":
-					values[i]="Q";
-					break;
-				case "k":
-					values[i]="K";
-					break;
-			}
-		}
-		for (int i = 0; i < 5; i++){
-			nHand.add(Deck.getCertainCard(suit[i].toUpperCase(), values[i]));
-		}
+		nHand = Deck.getCertainCard();
 	}
 	//----End Creation
 	//printing of hand
@@ -132,7 +101,7 @@ class Hand {
 	 * Used in finding a flush and a straight flush
 	 */
 	public boolean isFlush(String[] suits) {
-		if (!sameSuit(suits)) {
+		if (sameSuit(suits) == false) {
 			return false;
 		}
 		return true;
@@ -145,7 +114,6 @@ class Hand {
 			if (values[i] != values[0] + i) {
 				return false;
 			}
-			break;
 		}
 		return true;
 	}
@@ -250,13 +218,8 @@ class Hand {
 	 */
 
 	public boolean sameSuit(String[] a) {
-		for (int i = 1; i < a.length; i++) {
-			if (a[0] != a[i]) {
-				return false;
-			}
-			break;
-		}
-		return true;
+		return (a[0] == a[4]);
+
 	}
 
 }

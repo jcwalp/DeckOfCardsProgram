@@ -30,10 +30,19 @@ class Deck {
         return j;
     }
 
-    public static Card getCertainCard(String suit, String value) {
-        Card c;
-        c = new Card(suit, value);
-        return c;
+    public static ArrayList<Card> getCertainCard() {
+        ArrayList<Card> hand = new ArrayList<>();
+        Card a = new Card("H", "A");
+        Card b = new Card("H", "2");
+        Card c = new Card("H", "3");
+        Card d = new Card("H", "4");
+        Card e = new Card("H", "5");
+        hand.add(a);
+        hand.add(b);
+        hand.add(c);
+        hand.add(d);
+        hand.add(e);
+        return hand;
     }
 
 }
