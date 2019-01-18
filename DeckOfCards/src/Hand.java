@@ -34,19 +34,27 @@ class Hand {
 			tempVal[count] = value;
 			count++; //increments count
 		}
-		for (int i = 0; i < tempSuit.length; i++){
-			tempSuit[i].toUpperCase();
-		}
-		for (int i = 0; i < tempVal.length; i++){
-			switch(tempVal[i]){
-				case "a": tempVal[i] = "A";
-				case "j": tempVal[i] = "J";
-				case "q": tempVal[i] = "Q";
-				case "k": tempVal[i] = "K";
+		formatAndGetHand(tempSuit, tempVal);
+	}
+	public void formatAndGetHand(String[] suit, String[] values){
+		for (int i = 0; i < values.length; i++){
+			switch(values[i]){
+				case "a":
+					values[i]="A";
+					break;
+				case "j":
+					values[i]="J";
+					break;
+				case "q":
+					values[i]="Q";
+					break;
+				case "k":
+					values[i]="K";
+					break;
 			}
 		}
 		for (int i = 0; i < 5; i++){
-			nHand.add(Deck.getCertainCard(tempSuit[i], tempVal[i]));
+			nHand.add(Deck.getCertainCard(suit[i].toUpperCase(), values[i]));
 		}
 	}
 	//----End Creation
@@ -63,68 +71,71 @@ class Hand {
 		String[] val = new String[5];
 		for (int i = 0; i < val.length; i++) {
 			val[i] = nHand.get(i).getValue();
-			//System.out.println(val[i]);
+//			System.out.println(val[i]);
 		}
 		return val;
 	}
 	//Grabbing suits of hand
+
 	public String[] getSuits() { //grabbing suits of the cards in the hand
 		String[] suit = new String[5];
 		for (int i = 0; i < suit.length; i++) {
 			suit[i] = nHand.get(i).getSuit();
-			//System.out.println(suit[i]);
+//			System.out.println(suit[i]);
 		}
 		return suit;
 	}
-	
 	//--
 	//VALUE CHECKS
+
 	//--
-	
 	public String determineValue() { //LEAD METHOD
 		String[] suits = getSuits(); //grabs suits of hand 
 		String[] values = getValues(); //grabs values of hand
 		int[] valInt = convertInt(values); //converts this to int array
 		valInt = sortByValue(valInt); //sorts array from small to large
 		String res = ""; //sets the output string
-		
-		if(isStraight(valInt) && isFlush(suits)) {
-			res = "Straight Flush";
+		boolean caseFound = false;
+		while(!caseFound) {
+			if (isStraight(valInt) && isFlush(suits)) {
+				res = "Straight Flush";
+				break;
+			} else if (!isStraight(valInt) && isFlush(suits)) {
+				res = "Flush";
+				break;
+			} else if (isStraight(valInt) && !isFlush(suits)) {
+				res = "Straight";
+				break;
+			} else if (findPairs(valInt) == 5) {
+				res = "Full House";
+				break;
+			} else if (findPairs(valInt) == 4) {
+				res = "Four of a Kind";
+				break;
+			} else if (findPairs(valInt) == 3) {
+				res = "Three of a Kind";
+				break;
+			} else if (findPairs(valInt) == 2) {
+				res = "Two Pair";
+				break;
+			} else if (findPairs(valInt) == 1) {
+				res = "One Pair";
+				break;
+			} else {
+				res = "junk";
+				break;
+			}
 		}
-		else if (!isStraight(valInt) && isFlush(suits)) {
-			res = "Flush";
-		}
-		else if (isStraight(valInt) && !isFlush(suits)) {
-			res = "Straight";
-		}
-		else if (findPairs(valInt) == 5) {
-			res = "Full House";
-		}
-		else if (findPairs(valInt) == 4) {
-			res = "Four of a Kind";
-		}
-		else if (findPairs(valInt) == 3) {
-			res = "Three of a Kind";
-		}
-		else if (findPairs(valInt) == 2) {
-			res = "Two Pair";
-		}
-		else if (findPairs(valInt) == 1) {
-			res = "One Pair";
-		}
-		else {
-			res = "junk";
-		}
-		return res;
+			return res;
 	}
 	/*
 	 * Used in finding a flush and a straight flush
 	 */
 	public boolean isFlush(String[] suits) {
-		if (sameSuit(suits)) {
-			return true;
+		if (!sameSuit(suits)) {
+			return false;
 		}
-		return false;
+		return true;
 	}
 	/*
 	 * Used in finding both a straight and a straight flush
@@ -134,9 +145,11 @@ class Hand {
 			if (values[i] != values[0] + i) {
 				return false;
 			}
+			break;
 		}
 		return true;
 	}
+
 	public int findPairs(int[] values){
 		boolean fourOfKind, threeOfKind, twoPair, onePair;
 		int fH = 5, fK = 4, tK = 3, tP = 2, oP = 1, n = 0;
@@ -164,7 +177,7 @@ class Hand {
 
 		onePair = values[0] == values[1] ||
 				values[1] == values[2] ||
-				values[2] == values[3] || 
+				values[2] == values[3] ||
 				values[3] == values[4];
 
 		if (fourOfKind) {
@@ -186,20 +199,20 @@ class Hand {
 			return n;
 		}
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 /*
  * =========HELPER METHODS=========================
  */
-	
 	/*
 	 * Method that converts our original value array of strings
 	 * into an int araray  which makes it easier to use
 	 * I changed all of the letter values into their numerical constants
 	 */
+
 	public int[] convertInt(String[] a) {
 		int[] vals = new int[a.length];
 		for (int i = 0; i < a.length; i++) {
@@ -221,28 +234,29 @@ class Hand {
 		}
 		return vals;
 	}
-	
 	/*
 	 * Sorts the array sent and then returns it
 	 * this makes finding pairs and incrementing values easy
 	 */
+
 	public int[] sortByValue(int[] a) {
 		int[] sorted = new int[a.length];
 		sorted = a;
 		Arrays.sort(sorted);
 		return sorted;
 	}
-	
 	/*
 	 * Method checks to see if all the cards in string array are the same suit
 	 */
+
 	public boolean sameSuit(String[] a) {
 		for (int i = 1; i < a.length; i++) {
 			if (a[0] != a[i]) {
 				return false;
 			}
+			break;
 		}
 		return true;
 	}
-	
+
 }
