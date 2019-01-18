@@ -218,7 +218,12 @@ class Hand {
 	 */
 
 	public boolean sameSuit(String[] a) {
-		return (a[0] == a[4]);
+		boolean isSame = a[0] == a[1] &&
+						 a[1] == a[2] &&
+						 a[2] == a[3] &&
+						 a[3] == a[4];
+
+		return isSame;
 
 	}
 

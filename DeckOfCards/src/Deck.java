@@ -32,11 +32,11 @@ class Deck {
 
     public static ArrayList<Card> getCertainCard() {
         ArrayList<Card> hand = new ArrayList<>();
-        Card a = new Card("H", "A");
-        Card b = new Card("H", "2");
-        Card c = new Card("H", "3");
-        Card d = new Card("H", "4");
-        Card e = new Card("H", "5");
+        Card a = new Card("H", "K");
+        Card b = new Card("D", "K");
+        Card c = new Card("C", "K");
+        Card d = new Card("S", "4");
+        Card e = new Card("H", "4");
         hand.add(a);
         hand.add(b);
         hand.add(c);
